@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import threading
 from functools import lru_cache
+from inspect import signature
 from pathlib import Path
 from typing import Iterable, List
 
@@ -20,6 +21,13 @@ try:
     }
 except ImportError:  # pragma: no cover - fallback for older llama_cpp
     POOLING_OPTIONS = {"mean": "mean", "cls": "cls", "none": "none"}
+
+try:
+    _CREATE_EMBEDDING_ACCEPTS_POOLING = (
+        "pooling_type" in signature(Llama.create_embedding).parameters
+    )
+except (ValueError, TypeError):  # pragma: no cover - defensive guard
+    _CREATE_EMBEDDING_ACCEPTS_POOLING = False
 
 
 class EmbeddingModel:
@@ -87,9 +95,10 @@ class EmbeddingModel:
 
         for index in range(0, len(payload), resolved_batch):
             chunk = payload[index : index + resolved_batch]
-            response = llama.create_embedding(
-                chunk, pooling_type=pooling, normalize=normalize
-            )
+            kwargs = {"normalize": normalize}
+            if _CREATE_EMBEDDING_ACCEPTS_POOLING:
+                kwargs["pooling_type"] = pooling
+            response = llama.create_embedding(chunk, **kwargs)
             chunk_embeddings = [
                 item["embedding"] for item in response["data"] if "embedding" in item
             ]
