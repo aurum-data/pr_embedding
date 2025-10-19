@@ -4,7 +4,7 @@ services:
     env: python
     plan: starter
     region: oregon
-    buildCommand: mkdir -p /opt/render/project/.cargo && pip install --upgrade pip && pip install -r requirements.txt
+    buildCommand: export CARGO_HOME=/opt/render/project/.cargo && mkdir -p "$CARGO_HOME" && pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: MODEL_REPO_ID
