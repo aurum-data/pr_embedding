@@ -32,6 +32,8 @@ cp .env.example .env
 | `THREADS` | Number of CPU threads to use | `4` |
 | `CONTEXT_WINDOW` | `n_ctx` value passed to llama.cpp | `8192` |
 | `MAX_BATCH_SIZE` | Maximum batch size for inference | `32` |
+| `HOST` | Listener interface used when running the app module directly | `0.0.0.0` |
+| `PORT` | API port when running via `python -m app.main` | `8000` |
 
 ### 3. Run locally
 ```bash

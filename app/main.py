@@ -83,3 +83,14 @@ async def create_embeddings(request: EmbeddingRequest) -> EmbeddingResponse:
         data=data,
         model=f"{settings.model_repo_id}:{settings.model_file}",
     )
+
+
+if __name__ == "__main__":
+    # Allow `python -m app.main` to honor configured host/port without extra flags.
+    import uvicorn
+
+    uvicorn.run(
+        app,
+        host=settings.server_host,
+        port=settings.server_port,
+    )
