@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pr-embedding
+    env: python
+    plan: starter
+    region: oregon
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MODEL_REPO_ID
+        value: nomic-ai/nomic-embed-text-v1.5
+      - key: MODEL_FILE
+        value: nomic-embed-text-v1.5.Q4_K_M.gguf
+      - key: MODEL_CACHE_DIR
+        value: /opt/render/project/.models
+      - key: THREADS
+        value: "4"
