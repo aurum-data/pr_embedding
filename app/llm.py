@@ -38,7 +38,6 @@ class EmbeddingModel:
                 repo_id=settings.model_repo_id,
                 filename=settings.model_file,
                 local_dir=settings.model_cache_dir,
-                local_dir_use_symlinks=False,
             )
         )
         self._model_path = model_path
