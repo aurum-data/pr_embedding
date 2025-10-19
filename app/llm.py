@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import threading
+import math
 from functools import lru_cache
 from inspect import signature
 from pathlib import Path
@@ -26,8 +27,12 @@ try:
     _CREATE_EMBEDDING_ACCEPTS_POOLING = (
         "pooling_type" in signature(Llama.create_embedding).parameters
     )
+    _CREATE_EMBEDDING_ACCEPTS_NORMALIZE = (
+        "normalize" in signature(Llama.create_embedding).parameters
+    )
 except (ValueError, TypeError):  # pragma: no cover - defensive guard
     _CREATE_EMBEDDING_ACCEPTS_POOLING = False
+    _CREATE_EMBEDDING_ACCEPTS_NORMALIZE = False
 
 
 class EmbeddingModel:
@@ -95,16 +100,28 @@ class EmbeddingModel:
 
         for index in range(0, len(payload), resolved_batch):
             chunk = payload[index : index + resolved_batch]
-            kwargs = {"normalize": normalize}
+            kwargs: dict[str, object] = {}
             if _CREATE_EMBEDDING_ACCEPTS_POOLING:
                 kwargs["pooling_type"] = pooling
+            if _CREATE_EMBEDDING_ACCEPTS_NORMALIZE:
+                kwargs["normalize"] = normalize
             response = llama.create_embedding(chunk, **kwargs)
             chunk_embeddings = [
                 item["embedding"] for item in response["data"] if "embedding" in item
             ]
+            if normalize and not _CREATE_EMBEDDING_ACCEPTS_NORMALIZE:
+                chunk_embeddings = [self._normalize_vector(vec) for vec in chunk_embeddings]
             embeddings.extend(chunk_embeddings)
 
         return embeddings
+
+    @staticmethod
+    def _normalize_vector(vector: list[float]) -> list[float]:
+        """Apply L2 normalization when llama.cpp does not support normalize kwarg."""
+        norm = math.sqrt(sum(value * value for value in vector))
+        if norm == 0:
+            return vector
+        return [value / norm for value in vector]
 
 
 @lru_cache(maxsize=1)
