@@ -10,7 +10,7 @@ class Settings(BaseModel):
     server_host: str = Field(default="0.0.0.0", alias="HOST")
     server_port: int = Field(default=8000, alias="PORT")
     model_repo_id: str = Field(
-        default="nomic-ai/nomic-embed-text-v1.5", alias="MODEL_REPO_ID"
+        default="nomic-ai/nomic-embed-text-v1.5-GGUF", alias="MODEL_REPO_ID"
     )
     model_file: str = Field(
         default="nomic-embed-text-v1.5.Q4_K_M.gguf", alias="MODEL_FILE"

@@ -26,7 +26,7 @@ cp .env.example .env
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `MODEL_REPO_ID` | Hugging Face repository containing the GGUF model | `nomic-ai/nomic-embed-text-v1.5` |
+| `MODEL_REPO_ID` | Hugging Face repository containing the GGUF model | `nomic-ai/nomic-embed-text-v1.5-GGUF` |
 | `MODEL_FILE` | GGUF filename to download | `nomic-embed-text-v1.5.Q4_K_M.gguf` |
 | `MODEL_CACHE_DIR` | Local cache directory for the weights | `.models` |
 | `THREADS` | Number of CPU threads to use | `4` |
