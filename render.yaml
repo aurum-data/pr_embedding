@@ -2,6 +2,7 @@ services:
   - type: web
     name: pr-embedding
     env: python
+    pythonVersion: 3.11.7
     plan: starter
     region: oregon
     buildCommand: export CARGO_HOME=/opt/render/project/.cargo && mkdir -p "$CARGO_HOME" && pip install --upgrade pip && pip install -r requirements.txt
