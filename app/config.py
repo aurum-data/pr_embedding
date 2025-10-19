@@ -3,10 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseModel):
+class Settings(BaseSettings):
     server_host: str = Field(default="0.0.0.0", alias="HOST")
     server_port: int = Field(default=8000, alias="PORT")
     model_repo_id: str = Field(
@@ -25,7 +26,7 @@ class Settings(BaseModel):
         default="mean", alias="POOLING_STRATEGY"
     )
 
-    model_config = ConfigDict(
+    model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,

@@ -3,4 +3,5 @@ uvicorn[standard]==0.30.1
 llama-cpp-python==0.2.75
 huggingface_hub==0.24.0
 pydantic==2.9.2
+pydantic-settings==2.3.4
 python-dotenv==1.0.1
