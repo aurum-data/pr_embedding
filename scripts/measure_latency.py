@@ -14,7 +14,7 @@ from typing import Sequence
 import httpx
 
 # Default configuration values. Feel free to override via CLI flags.
-DEFAULT_BASE_URL = "http://127.0.0.1:8000"
+DEFAULT_BASE_URL = "https://pr-embedding.onrender.com"
 DEFAULT_COUNT    = 5
 DEFAULT_WARMUP   = 1
 DEFAULT_TIMEOUT  = 120.0
